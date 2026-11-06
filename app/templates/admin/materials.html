@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar materiais - IFNet{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center gap-2 mb-4">
+    <h1 class="h2 mb-0">Gerenciar materiais</h1>
+
+    <a class="btn btn-primary" href="{{ url_for('main.new_material') }}">
+        <i class="fa-solid fa-plus me-1"></i> Novo material
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+
+            <thead class="table-light">
+                <tr>
+                    <th>Título</th>
+                    <th>Ordem</th>
+                    <th>Tipo</th>
+                    <th>Descrição</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for material in materials %}
+                <tr>
+                    <td>{{ material.title }}</td>
+
+                    <td>{{ material.order_index }}</td>
+
+                    <td>
+                        {{ {
+                            'content': 'Conteúdo',
+                            'video': 'Vídeo',
+                            'exercise': 'Exercício'
+                        }[material.material_type] }}
+                    </td>
+
+                    <td>{{ material.description or '—' }}</td>
+
+                    <td class="text-end text-nowrap">
+                        <a
+                            class="btn btn-sm btn-outline-primary"
+                            href="{{ url_for('main.edit_material', material_id=material.id) }}">
+                            Editar
+                        </a>
+
+                        <form
+                            class="d-inline"
+                            method="post"
+                            action="{{ url_for('main.delete_material', material_id=material.id) }}"
+                            onsubmit="return confirm('Deseja excluir este material?')">
+
+                            <input
+                                type="hidden"
+                                name="csrf_token"
+                                value="{{ csrf_token() }}">
+
+                            <button class="btn btn-sm btn-outline-danger">
+                                Excluir
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                        Nenhum material cadastrado.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+```

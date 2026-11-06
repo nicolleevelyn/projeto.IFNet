@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} - IFNet{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-8"><div class="card shadow-sm"><div class="card-body p-4">
+<h1 class="h3 mb-4">{{ page_title }}</h1>
+<form method="post">{{ form.hidden_tag() }}
+<div class="mb-3">{{ form.title.label(class="form-label") }}{{ form.title(class="form-control") }}{% for error in form.title.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+<div class="mb-3">{{ form.description.label(class="form-label") }}{{ form.description(class="form-control") }}{% for error in form.description.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+<div class="mb-3">{{ form.material_type.label(class="form-label") }}{{ form.material_type(class="form-select", id="material_type") }}</div>
+<div class="mb-3">{{ form.body.label(class="form-label") }}{{ form.body(class="form-control", rows="10", placeholder="Escreva aqui o conteúdo, explicação ou enunciado do exercício.") }}<div class="form-text">Quebras de linha serão mantidas na página de estudo.</div></div>
+<div class="mb-3">
+    {{ form.order_index.label(class="form-label") }}
+
+    {{ form.order_index(class="form-control", min="1") }}
+
+    <div class="form-text">
+        Define a posição deste material dentro da sua categoria.
+        Ex.: 1 aparece primeiro, 2 aparece depois.
+    </div>
+
+    {% for error in form.order_index.errors %}
+        <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-3">
+    {{ form.video_url.label(class="form-label") }}
+
+    {{ form.video_url(class="form-control", placeholder="https://...") }}
+
+    <div class="form-text">
+        Adicione um link do YouTube, Kahoot, Google Forms ou outro site externo.
+    </div>
+</div>
+<div class="d-flex gap-2"><button class="btn btn-primary" type="submit">Salvar</button><a class="btn btn-outline-secondary" href="{{ url_for('main.admin_materials') }}">Cancelar</a></div>
+</form></div></div></div></div>
+{% endblock %}

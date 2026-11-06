@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} - IFNet{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+        <h1 class="h2 mb-1">{{ page_title }}</h1>
+        <p class="text-muted mb-0">Materiais disponibilizados para estudo.</p>
+    </div>
+    {% if current_user.is_admin %}<a class="btn btn-primary" href="{{ url_for('main.new_material') }}"><i class="fa-solid fa-plus me-1"></i> Adicionar material</a>{% endif %}
+</div>
+<div class="mb-4">
+    <div class="input-group">
+        <span class="input-group-text bg-white">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <input
+            type="text"
+            id="pesquisaMateriais"
+            class="form-control"
+            placeholder="Pesquisar por título..."
+        >
+    </div>
+</div>
+<div class="col-12 text-center py-4" id="mensagemVazia" style="display: none;">
+    <i class="fa-solid fa-magnifying-glass fa-2x text-muted mb-3"></i>
+    <h5>Nenhum material encontrado</h5>
+    <p class="text-muted">
+        Não encontramos materiais com esse título.
+        Tente pesquisar outro termo.
+    </p>
+</div>
+
+<div class="row g-3">
+    {% for material in materials %}
+    <div class="col-md-6 col-xl-4 card-material">
+        <div class="card h-100 shadow-sm">
+
+            <div class="card-body">
+                <span class="badge text-bg-{{ 'success' if material.material_type == 'video' else ('warning' if material.material_type == 'exercise' else 'primary') }} mb-2">
+                    {{ {'content':'Conteúdo','video':'Vídeo','exercise':'Exercício'}[material.material_type] }}
+                </span>
+
+                <h2 class="h5">{{ material.title }}</h2>
+
+                <p class="text-muted mb-0">
+                    {{ material.description or 'Sem descrição.' }}
+                </p>
+            </div>
+
+            <div class="card-footer bg-white">
+                <a class="btn btn-outline-primary"
+                   href="{{ url_for('main.estudar', material_id=material.id) }}">
+                    {{ 'Assistir' if page_type == 'video' else ('Resolver' if page_type == 'exercise' else 'Estudar') }}
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-light border">
+            Ainda não há materiais nesta seção.
+            {% if current_user.is_admin %}
+                Use <strong>Adicionar material</strong> para cadastrar o primeiro.
+            {% else %}
+                Aguarde o professor adicionar materiais.
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const pesquisa = document.getElementById("pesquisaMateriais");
+    const cards = document.querySelectorAll(".card-material");
+    const mensagem = document.getElementById("mensagemVazia");
+    pesquisa.addEventListener("input", function() {
+        const texto = pesquisa.value.toLowerCase().trim();
+        let encontrados = 0;
+        cards.forEach(function(card) {
+            const titulo = card.querySelector("h2").textContent.toLowerCase();
+            if (titulo.includes(texto)) {
+                card.style.display = "";
+                encontrados++;
+            } else {
+                card.style.display = "none";
+            }
+        });
+        if (encontrados === 0 && cards.length > 0) {
+            mensagem.style.display = "block";
+        } else {
+            mensagem.style.display = "none";
+        }
+    });
+});
+</script>
+{% endblock %}

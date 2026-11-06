@@ -1,0 +1,50 @@
+:root {
+    --ifnet-primary: #0d6efd;
+}
+
+body {
+    min-height: 100vh;
+    background: #96a0af;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.hero-panel {
+    color: #fff;
+    background: linear-gradient(120deg, #12345a, #1769aa);
+}
+
+.card {
+    border: 1px solid #e6eaf0;
+}
+
+.card-footer {
+    border-top: 1px solid #edf0f4;
+}
+
+.material-body {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    line-height: 1.8;
+}
+
+textarea {
+    min-height: 180px;
+}
+
+footer {
+    background: #e0f0fa;
+}
+
+/* Fundo exclusivo da tela de login */
+body.tela-login {
+    background-image: url("../img/fundo.png");
+   background-size: 700px auto;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}

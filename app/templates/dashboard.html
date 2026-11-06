@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Início - IFNet{% endblock %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded-3 hero-panel">
+    <h1 class="display-6 fw-bold">Bem-vindo(a), {{ current_user.name }}!</h1>
+    <p class="col-md-9 fs-5 mb-0">Estude Redes de Computadores com materiais, videoaulas e exercícios organizados em um só lugar.</p>
+</div>
+<div class="row g-3">
+    {% for title, description, icon, color, endpoint in [
+        ('Conteúdos', 'Leia materiais e resumos da disciplina.', 'fa-book-open', 'primary', 'main.conteudos'),
+        ('Vídeos', 'Acesse os vídeos disponibilizados pelo professor.', 'fa-circle-play', 'success', 'main.videos'),
+        ('Exercícios', 'Pratique o que você aprendeu.', 'fa-list-check', 'warning', 'main.exercicios')
+    ] %}
+    <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body">
+        <i class="fa-solid {{ icon }} text-{{ color }} fs-2 mb-3"></i><h2 class="h4">{{ title }}</h2><p class="text-muted">{{ description }}</p>
+        <a class="btn btn-outline-{{ color }}" href="{{ url_for(endpoint) }}">Acessar</a>
+    </div></div></div>
+    {% endfor %}
+</div>
+{% if current_user.is_admin %}
+<div class="alert alert-info mt-4 mb-0">Você está acessando o perfil de professor. Use o menu <strong>Administração</strong> para cadastrar e gerenciar materiais e usuários.</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ material.title }} - IFNet{% endblock %}
+{% block content %}
+<a href="{{ url_for({'content':'main.conteudos','video':'main.videos','exercise':'main.exercicios'}[material.material_type]) }}" class="text-decoration-none">← Voltar</a>
+<div class="card shadow-sm mt-3">
+    <div class="card-body p-4">
+<span class="badge text-bg-{{ 'success' if material.material_type == 'video' else ('warning' if material.material_type == 'exercise' else 'primary') }} mb-2">{{ {'content':'Conteúdo','video':'Vídeo','exercise':'Exercício'}[material.material_type] }}</span>
+<h1 class="h2">{{ material.title }}</h1>
+{% if material.description %}<p class="lead text-muted">{{ material.description }}</p>
+{% endif %}
+{% if material.body %}<div class="material-body">{{ material.body }}</div>
+{% else %}<p class="text-muted">O professor ainda não adicionou um texto para este material.</p>
+{% endif %}
+{% if material.video_url %}
+<div class="mt-4">
+
+    {% if youtube_embed_url %}
+
+        <div class="ratio ratio-16x9">
+            <iframe
+                src="{{ youtube_embed_url }}"
+                title="{{ material.title }}"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+    {% else %}
+
+        <a
+            href="{{ material.video_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary">
+            <i class="fa-solid fa-arrow-up-right-from-square me-2"></i>
+            Acessar link externo
+        </a>
+
+    {% endif %}
+
+</div>
+{% endif %}
+{% if current_user.is_admin %}<div class="border-top mt-4 pt-3"><a class="btn btn-outline-primary" href="{{ url_for('main.edit_material', material_id=material.id) }}">Editar material</a>
+</div>
+{% endif %}
+</div>
+{% endblock %}

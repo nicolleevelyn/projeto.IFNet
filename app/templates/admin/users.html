@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Gerenciar usuários - IFNet{% endblock %}
+{% block content %}
+<h1 class="h2 mb-4">Gerenciar usuários</h1>
+<div class="card shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Alterar perfil</th></tr></thead><tbody>
+{% for user in users %}<tr><td>{{ user.name }}</td><td>{{ user.email }}</td><td><span class="badge text-bg-{{ 'warning' if user.is_admin else 'primary' }}">{{ 'Professor' if user.is_admin else 'Estudante' }}</span></td><td><form method="post" action="{{ url_for('main.change_role', user_id=user.id) }}" class="d-flex gap-2"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><select class="form-select form-select-sm" name="role" aria-label="Perfil de {{ user.name }}"><option value="student" {% if user.role == 'student' %}selected{% endif %}>Estudante</option><option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Professor</option></select><button class="btn btn-sm btn-primary">Salvar</button></form></td></tr>
+{% else %}<tr><td colspan="4" class="text-center text-muted py-4">Nenhum usuário cadastrado.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}
