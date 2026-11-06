@@ -46,6 +46,3 @@ projeto_flask_sbadmin/
 ├── requirements.txt
 └── run.py
 ```
-
-## Observação importante
-Este projeto é uma base escolar/de desenvolvimento. Antes de publicar na internet, temos que configurar uma `SECRET_KEY` forte, revise a criação da primeira conta administrativa e utilize HTTPS.
